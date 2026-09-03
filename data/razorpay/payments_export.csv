@@ -1,0 +1,4 @@
+id,amount,currency,status,method,created_at,email
+pay_RZP_9001,5000.00,INR,captured,upi,1756720000,aarav.patel@example.com
+pay_RZP_9002,12500.00,INR,captured,card,1756725000,rohan.mehta@example.com
+pay_RZP_9003,3200.00,INR,captured,netbanking,1756730000,neha.gupta@example.com

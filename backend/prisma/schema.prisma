@@ -1,0 +1,199 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  name       String
+  password   String
+  role       String   @default("FINANCE_MANAGER")
+  businessId String?
+  business   Business? @relation(fields: [businessId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Business {
+  id        String   @id @default(uuid())
+  name      String
+  currency  String   @default("INR")
+  users     User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Provider {
+  id          String   @id @default(uuid())
+  code        String   @unique // RAZORPAY, PHONEPE, GPAY, PAYTM, BANK, POS
+  name        String
+  type        String   // PAYMENT_GATEWAY, BANK, POS
+  status      String   @default("ACTIVE")
+  feeRate     Float    @default(0.02) // 2% average
+  settlementDays Int   @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Order {
+  id             String                 @id @default(uuid())
+  orderId        String                 @unique // e.g. ORD-1001
+  customerName   String?
+  customerEmail  String?
+  amount         Float
+  currency       String                 @default("INR")
+  status         String                 @default("CREATED") // CREATED, PAID, PARTIAL, REFUNDED, FAILED
+  orderDate      DateTime
+  metadata       String?                // JSON string
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+  transactions   Transaction[]
+  reconciliations ReconciliationResult[]
+  exceptions     FinancialException[]
+  refunds        Refund[]
+}
+
+model Transaction {
+  id                String                 @id @default(uuid())
+  externalId        String                 @unique // Provider tx ID
+  providerCode      String                 // RAZORPAY, PHONEPE, GPAY, PAYTM, BANK, POS
+  orderId           String?
+  order             Order?                 @relation(fields: [orderId], references: [id])
+  amount            Float
+  currency          String                 @default("INR")
+  status            String                 // SUCCESS, FAILED, PENDING, REFUNDED, CANCELLED
+  transactionType   String                 @default("PAYMENT") // PAYMENT, REFUND, FEE, ADJUSTMENT, TRANSFER
+  transactionDate   DateTime
+  customerReference String?
+  feeAmount         Float                  @default(0)
+  netAmount         Float                  @default(0)
+  metadata          String?                // JSON string
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+  reconciliations   ReconciliationResult[]
+  exceptions        FinancialException[]
+  refunds           Refund[]
+  fees              Fee[]
+}
+
+model Settlement {
+  id              String                 @id @default(uuid())
+  settlementId    String                 @unique // Provider settlement payout ID
+  providerCode    String                 // RAZORPAY, PHONEPE, GPAY, PAYTM, BANK
+  expectedAmount  Float
+  actualAmount    Float
+  fees            Float                  @default(0)
+  settlementDate  DateTime
+  status          String                 @default("SETTLED") // SETTLED, PENDING, MISMATCH
+  metadata        String?
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+  reconciliations ReconciliationResult[]
+  exceptions      FinancialException[]
+}
+
+model Refund {
+  id            String       @id @default(uuid())
+  refundId      String       @unique
+  transactionId String?
+  transaction   Transaction? @relation(fields: [transactionId], references: [id])
+  orderId       String?
+  order         Order?       @relation(fields: [orderId], references: [id])
+  providerCode  String
+  amount        Float
+  reason        String?
+  status        String       @default("COMPLETED")
+  processedAt   DateTime
+  createdAt     DateTime     @default(now())
+}
+
+model Fee {
+  id                 String       @id @default(uuid())
+  transactionId      String?
+  transaction        Transaction? @relation(fields: [transactionId], references: [id])
+  providerCode       String
+  feeType            String       @default("GATEWAY_FEE")
+  expectedPercentage Float        @default(0.02)
+  expectedAmount     Float
+  actualAmount       Float
+  difference         Float        @default(0)
+  status             String       @default("MATCHED") // MATCHED, ANOMALY
+  createdAt          DateTime     @default(now())
+}
+
+model ReconciliationResult {
+  id             String      @id @default(uuid())
+  orderId        String?
+  order          Order?      @relation(fields: [orderId], references: [id])
+  transactionId  String?
+  transaction    Transaction?@relation(fields: [transactionId], references: [id])
+  settlementId   String?
+  settlement     Settlement? @relation(fields: [settlementId], references: [id])
+  expectedAmount Float
+  actualAmount   Float
+  difference     Float
+  status         String      // RECONCILED, PARTIAL, PENDING, MISMATCH, MISSING
+  reason         String?
+  confidence     Float       @default(1.0)
+  createdAt      DateTime    @default(now())
+}
+
+model FinancialException {
+  id                String      @id @default(uuid())
+  exceptionCode     String      @unique // e.g. EXC-1001
+  orderId           String?
+  order             Order?      @relation(fields: [orderId], references: [id])
+  transactionId     String?
+  transaction       Transaction?@relation(fields: [transactionId], references: [id])
+  settlementId      String?
+  settlement        Settlement? @relation(fields: [settlementId], references: [id])
+  providerCode      String
+  severity          String      @default("MEDIUM") // HIGH, MEDIUM, LOW
+  title             String
+  description       String
+  expectedAmount    Float
+  actualAmount      Float
+  difference        Float
+  status            String      @default("OPEN") // OPEN, INVESTIGATING, REVIEWED, RESOLVED
+  aiAnalysis        String?
+  evidenceJson      String?     // JSON string of findings
+  recommendedAction String?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+}
+
+model Forecast {
+  id                    String   @id @default(uuid())
+  forecastDate          DateTime
+  expectedRevenue       Float
+  expectedSettlements   Float
+  expectedRefunds       Float
+  expectedExpenses      Float
+  estimatedCashPosition Float
+  confidenceScore       Float    @default(0.85)
+  methodology           String   @default("Trailing 14-day weighted pattern analysis")
+  createdAt             DateTime @default(now())
+}
+
+model AIConversation {
+  id        String      @id @default(uuid())
+  title     String
+  messages  AIMessage[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model AIMessage {
+  id             String         @id @default(uuid())
+  conversationId String
+  conversation   AIConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           String         // user, assistant, system, tool
+  content        String
+  toolCallsJson  String?        // JSON string of tool calls executed
+  createdAt      DateTime       @default(now())
+}
