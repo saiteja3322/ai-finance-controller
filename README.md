@@ -27,9 +27,9 @@ Evidence-Grounded AI Controller: Built on a deterministic database function-call
 - **Demo Control Center**: 1-click scenario selector built specifically for a 3-5 minute hackathon presentation flow.
 
 ---
-# 🚀 LIVE DEMO
+## 🚀 LIVE DEMO
 
-## 🌐 FRONTEND APPLICATION
+### 🌐 FRONTEND APPLICATION
 
 ### 👉 https://aifinancemanger.netlify.app/
 
