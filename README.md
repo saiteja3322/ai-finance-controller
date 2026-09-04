@@ -6,7 +6,7 @@
 
 ## 🎯 Problem Statement
 
-Modern businesses receive money through multiple fragmented payment channels (Razorpaybusiness, PhonePebusiness, Google Paybusiness, Paytmbusiness, POS terminals, and direct bank transfers).
+Modern businesses receive money through multiple fragmented payment channels (Razorpay, PhonePe, Google Pay, Paytm, POS terminals, and direct bank transfers).
 
 Operating across fragmented provider dashboards leads to critical financial blind spots:
 - **"Where is my money?"**
