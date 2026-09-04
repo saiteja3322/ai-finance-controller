@@ -176,7 +176,7 @@ export const ChartsSection: React.FC<ChartsSectionProps> = ({
   // Payment Provider Performance (Horizontal Bar Chart Data)
   const providerBarData = (providers.length > 0 ? providers : [
     { provider: 'RAZORPAY', totalRevenue: 280000, successRate: '100.0%', feeRatePercent: '2.00%' },
-    { provider: 'PHONEPE', totalRevenue: 320000, successRate: '97.6%', feeRatePercent: '1.80%' },
+    { provider: 'PHONEPE', totalRevenue: 293000, successRate: '97.6%', feeRatePercent: '1.80%' },
     { provider: 'GPAY', totalRevenue: 295000, successRate: '100.0%', feeRatePercent: '1.50%' },
     { provider: 'PAYTM', totalRevenue: 292000, successRate: '100.0%', feeRatePercent: '1.90%' },
     { provider: 'POS', totalRevenue: 288000, successRate: '100.0%', feeRatePercent: '1.20%' },

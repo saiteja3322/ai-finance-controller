@@ -9,7 +9,7 @@ interface ProviderCardsProps {
 export const ProviderCards: React.FC<ProviderCardsProps> = ({ providers }) => {
   const providerList = providers.length > 0 ? providers : [
     { provider: 'RAZORPAY', totalTransactions: 98, successRate: '98.4%', failedCount: 1, totalRevenue: 520000, totalFees: 10400, feeRatePercent: '2.00%', openExceptionsCount: 1 },
-    { provider: 'PHONEPE', totalTransactions: 64, successRate: '94.2%', failedCount: 3, totalRevenue: 380000, totalFees: 6840, feeRatePercent: '1.80%', openExceptionsCount: 1 },
+    { provider: 'PHONEPE', totalTransactions: 64, successRate: '94.2%', failedCount: 3, totalRevenue: 293000, totalFees: 6840, feeRatePercent: '1.80%', openExceptionsCount: 1 },
     { provider: 'GPAY', totalTransactions: 42, successRate: '97.1%', failedCount: 1, totalRevenue: 210000, totalFees: 3150, feeRatePercent: '1.50%', openExceptionsCount: 1 },
     { provider: 'PAYTM', totalTransactions: 28, successRate: '91.5%', failedCount: 2, totalRevenue: 110000, totalFees: 2090, feeRatePercent: '1.90%', openExceptionsCount: 1 },
   ];

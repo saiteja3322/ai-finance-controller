@@ -54,7 +54,7 @@ export const dashboardController = {
       const startDateStr = req.query.startDate as string;
       const endDateStr = req.query.endDate as string;
 
-      const orderWhere: any = {};
+      const orderWhere: any = { status: { in: ['PAID', 'SUCCESS'] } };
       const settlementWhere: any = { status: 'SETTLED' };
       const pendingWhere: any = { status: 'PENDING' };
       const refundWhere: any = {};
@@ -124,7 +124,7 @@ export const dashboardController = {
       const startDateStr = req.query.startDate as string;
       const endDateStr = req.query.endDate as string;
 
-      const orderWhere: any = {};
+      const orderWhere: any = { status: { in: ['PAID', 'SUCCESS'] } };
       const settlementWhere: any = {};
 
       if (startDateStr || endDateStr) {

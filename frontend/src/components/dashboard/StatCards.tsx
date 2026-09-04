@@ -25,7 +25,7 @@ export const StatCards: React.FC<StatCardsProps> = ({ summary }) => {
   const cards = [
     {
       title: 'Total Revenue',
-      value: formatINR(summary?.totalRevenue || 1240000),
+      value: formatINR(summary?.totalRevenue || 1440704),
       subtitle: '+12.4% vs last period',
       trend: 'up',
       icon: IndianRupee,

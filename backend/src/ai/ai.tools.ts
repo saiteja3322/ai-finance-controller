@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 export const aiTools = {
   async getTotalRevenue() {
     const orders = await prisma.order.aggregate({
+      where: { status: { in: ['PAID', 'SUCCESS'] } },
       _sum: { amount: true },
       _count: { id: true },
     });
@@ -77,7 +78,7 @@ export const aiTools = {
       const totalCount = txs.length;
       const successCount = txs.filter((t) => t.status === 'SUCCESS').length;
       const failedCount = txs.filter((t) => t.status === 'FAILED').length;
-      const totalAmount = txs.reduce((acc, t) => acc + t.amount, 0);
+      const totalAmount = txs.filter((t) => t.status === 'SUCCESS').reduce((acc, t) => acc + t.amount, 0);
       const totalFees = txs.reduce((acc, t) => acc + t.feeAmount, 0);
 
       const exceptions = await prisma.financialException.count({
@@ -142,6 +143,7 @@ export const aiTools = {
 
   async getRevenueTrend() {
     const orders = await prisma.order.findMany({
+      where: { status: { in: ['PAID', 'SUCCESS'] } },
       orderBy: { orderDate: 'asc' },
       select: { orderDate: true, amount: true },
     });
