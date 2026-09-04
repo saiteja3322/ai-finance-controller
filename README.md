@@ -1,6 +1,6 @@
 # AI Finance Controller 🛡️💸
 
-> **Unified Financial Source of Truth, Multi-Way Automated Reconciliation & AI Financial Exception Investigator**
+> **Unified Financial Control Center, Automated Reconciliation & AI-Powered Exception Investigation**
 
 ---
 
@@ -13,7 +13,7 @@ Operating across fragmented provider dashboards leads to critical financial blin
 - **"Why don't bank payouts match sales reports?"**
 - **"Which provider is withholding funds or overcharging gateway MDR fees?"**
 
-Existing dashboards simply aggregate gross sales figures. **AI Finance Controller** creates a unified financial source of truth, performs multi-way automated reconciliation across transactions and settlements, identifies exact discrepancy amounts, and provides AI-powered audit investigations.
+When businesses operate across multiple payment providers and financial sources, finance teams can face fragmented views, different data formats, and manual exception-handling workflows. AI Finance Controller creates a unified financial control layer, performs multi-way reconciliation across transactions and settlements, identifies exact discrepancy amounts, and provides AI-assisted investigation using application data.
 
 ---
 
@@ -21,10 +21,21 @@ Existing dashboards simply aggregate gross sales figures. **AI Finance Controlle
 
 - **One Financial Truth**: Normalizes Razorpay, PhonePe, GPay, Paytm, Bank statements, and POS reports into a single standardized domain model.
 - **Multi-Way Automated Reconciliation Engine**: Cross-matches `Order -> Payment Transaction -> Gateway Fee (MDR) -> Expected Settlement -> Actual Bank Settlement -> Refunds` to identify exact mismatches.
-- **Zero-Hallucination AI Controller**: Built on a **Deterministic Database Function Calling System** (13+ backend database tools). The LLM reasons only over hard, verified facts.
+Evidence-Grounded AI Controller: Built on a deterministic database function-calling system with 13+ backend financial tools. The controller grounds investigations in verified application data and separates database evidence from AI-generated explanations and recommendations.
 - **AI Financial Exception Investigator**: Inspects payout shortfalls and fee anomalies, clearly separating **Hard Verified Database Evidence** from **AI Explanation** and **Actionable Next Steps**.
 - **Predictive Cash Flow Forecasting**: 7-day trailing pattern liquidity forecast model.
 - **Demo Control Center**: 1-click scenario selector built specifically for a 3-5 minute hackathon presentation flow.
+
+---
+# 🚀 LIVE DEMO
+
+## 🌐 FRONTEND APPLICATION
+
+### 👉 https://aifinancemanger.netlify.app/
+
+## ⚙️ BACKEND API
+
+### 👉 https://ai-finance-controller-xevh.onrender.com/
 
 ---
 
@@ -67,9 +78,9 @@ Existing dashboards simply aggregate gross sales figures. **AI Finance Controlle
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: Next.js / React, TypeScript, Tailwind CSS, Recharts, Lucide Icons
+-- **Frontend**: React, TypeScript, Vite, Tailwind CSS, Recharts, Lucide Icons
 - **Backend**: Node.js, Express.js, TypeScript
-- **Database & ORM**: PostgreSQL compatible Prisma ORM (SQLite `dev.db` zero-dependency local default)
+- **Database & ORM**: Prisma ORM with SQLite for the prototype/demo environment
 - **AI Engine**: Gemini API (`@google/generative-ai`) with deterministic function calling & fallback engine
 - **Authentication**: JWT, bcrypt
 
@@ -125,7 +136,7 @@ Create a `.env` file in `/backend`:
 PORT=5000
 NODE_ENV=development
 DATABASE_URL="file:./dev.db"
-JWT_SECRET="ai-finance-controller-super-secret-jwt-key-2026"
+JWT_SECRET="your-secret-key"
 
 # Optional: Gemini API Key (Fallback engine active if omitted)
 GEMINI_API_KEY=""
